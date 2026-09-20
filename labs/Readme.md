@@ -103,19 +103,19 @@ labs/
 
 ### Описание ключевых файлов и папок
 
-| Файл/папка | Назначение |
-|-------------|-------------|
-| README.md   | Главный файл курса с описанием, списком работ, навигацией |
-| news/views.py | Контроллеры приложения |
-| news/urls.py | Маршруты приложения |
-| MySite/urls.py | Корневые маршруты проекта |
-| settings.py | Настройки проекта, регистрация приложений |
+| Файл/папка     | Назначение                                                |
+| -------------- | --------------------------------------------------------- |
+| README.md      | Главный файл курса с описанием, списком работ, навигацией |
+| news/views.py  | Контроллеры приложения                                    |
+| news/urls.py   | Маршруты приложения                                       |
+| MySite/urls.py | Корневые маршруты проекта                                 |
+| settings.py    | Настройки проекта, регистрация приложений                 |
 
 ### Результаты проверки
 
-| Адрес | Результат |
-|-------|-----------|
-| `http://127.0.0.1:8000/news/` | «Hello, world!» |
+| Адрес                              | Результат           |
+| ---------------------------------- | ------------------- |
+| `http://127.0.0.1:8000/news/`      | «Hello, world!»     |
 | `http://127.0.0.1:8000/news/test/` | «Тестовая страница» |
 
 ## Контрольные вопросы
@@ -143,7 +143,7 @@ Django возвращает ответ с кодом 404 (Page not found).
 
 ## Рекомендуемые источники
 
-1. **Django официальная документация** — https://docs.djangoproject.com/
-2. **PyPI — Python Package Index** — https://pypi.org/
-3. **Django URL dispatcher** — https://docs.djangoproject.com/en/stable/topics/http/urls/
-4. **Django Views** — https://docs.djangoproject.com/en/stable/topics/http/views/
+1. **Django официальная документация** - https://docs.djangoproject.com/
+2. **PyPI — Python Package Index** - https://pypi.org/
+3. **Django URL dispatcher** - https://docs.djangoproject.com/en/stable/topics/http/urls/
+4. **Django Views** - https://docs.djangoproject.com/en/stable/topics/http/views/
