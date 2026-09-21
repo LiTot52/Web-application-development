@@ -25,7 +25,6 @@
 
 **Маршрут (route)** - правило сопоставления URL с контроллером, описываемое в `urls.py` через `path()` и объединяемое между приложениями через `include()`.
 
-## Выполнение практического примера
 
 ### Команды создания и настройки проекта
 
@@ -144,6 +143,6 @@ Django возвращает ответ с кодом 404 (Page not found).
 ## Рекомендуемые источники
 
 1. **Django официальная документация** - https://docs.djangoproject.com/
-2. **PyPI — Python Package Index** - https://pypi.org/
+2. **PyPI - Python Package Index** - https://pypi.org/
 3. **Django URL dispatcher** - https://docs.djangoproject.com/en/stable/topics/http/urls/
 4. **Django Views** - https://docs.djangoproject.com/en/stable/topics/http/views/
