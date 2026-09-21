@@ -75,6 +75,15 @@ urlpatterns = [
 ]
 ```
 
+### Скриншоты работы всех эндпоинто
+
+**1. `http://127.0.0.1:8000/` - Тестовая страница.**
+
+![Тестовая страница](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-1/01-get-all.png)
+
+
+**2. `http://127.0.0.1:8000/news/test/` - Тестовая страница с текстом**
+![Тестовая страница с текстом](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-1/02-get-all.png)
 
 ```
 labs/
