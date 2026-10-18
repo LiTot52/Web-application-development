@@ -72,21 +72,89 @@ python manage.py shell
 ## Выполнение практического примера
 
 
+```python
+from django.db import models
+
+class News(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField(blank=True)
+    created_ad = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=True)
+    photo = models.ImageField(upload_to='photos/%Y/%m/%d/')
 
 
+class Order(models.Model):
+    customer_name = models.CharField(max_length=200)
+    order_date = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+    delivery_address = models.TextField(blank=True)
 
+
+def __str__(self):
+    return self.title
+	
+```
+
+```
+labs/
+├── .venv/                     
+├── MySite/
+│   ├── MySite/                
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py            
+│   │   ├── wsgi.py
+│   │   └── asgi.py
+│   ├── news/                   
+│   │   ├── __init__.py
+│   │   ├── admin.py              
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── views.py           
+│   │   ├── urls.py            
+│   │   └── migrations/
+│   │       ├── 0001_initial.py 
+│   │       └── 0002_order.py    
+│   ├── db.sqlite3              
+│   └── manage.py              
+└── Readme.md                  
+
+```
+
+
+| Файл / Папка             | Назначение и внесенные изменения                                                                                                                                                                                 |
+| :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`news/models.py`**     | Разработаны модели **`News`** (базовая часть) и **`Order`** (индивидуальное задание). Настроены типы полей, параметры валидации (`max_length`, `blank`, `default`) и строковое представление объектов `__str__`. |
+| **`news/migrations/`**   | Содержит файлы миграций, сгенерированные автоматически с помощью команды `makemigrations`. Фиксирует изменения структуры таблиц на основе Python-кода.                                                           |
+| **`db.sqlite3`**         | Файл базы данных SQLite3. После выполнения команды `migrate` в нем были физически созданы таблицы `news_news` и `news_order`.                                                                                    |
+| **`MySite/settings.py`** | Прописаны конфигурационные константы **`MEDIA_ROOT`** и **`MEDIA_URL`** для определения путей хранения и загрузки изображений (медиафайлов).                                                                     |
+| **`MySite/urls.py`**     | Изменен корневой файл маршрутов. Добавлена функция `static()`, которая связывает `MEDIA_URL` и `MEDIA_ROOT` для раздачи картинок сервером в режиме разработки (`DEBUG = True`).                                  |
+
+
+---
 
 ## Ответы на контрольные вопросы
  
 1. **Что такое модель в Django и для чего она используется?** - Модель - это Python-класс, наследуемый от `models.Model`, который описывает структуру данных. Каждая модель соответствует таблице в БД, а её атрибуты - полям таблицы. Используется для хранения данных и работы с ними через ORM.
+
 2. **Какие типы полей вы знаете? Приведите примеры.** - `CharField` (название статьи), `TextField` (содержание), `IntegerField` (количество), `DateTimeField` (дата создания), `BooleanField` (признак публикации), `ImageField` (фото), `FloatField` (число с плавающей точкой).
+   
 3. **Чем отличаются параметры `blank=True` и `null=True`?** - `blank=True` относится к валидации: поле может быть пустым в формах и админке. `null=True` относится к БД: в столбце можно хранить значение `NULL`.
+   
 4. **Что такое миграции и зачем они нужны? Опишите основные команды для работы с ними.** - Миграции - файлы, в которых Django описывает изменения моделей, чтобы применять их к схеме БД. Команды: `makemigrations` - создать файлы миграций, `migrate` - применить их к БД, `sqlmigrate <app> <номер>` - показать SQL-запрос миграции, `showmigrations` - показать статус миграций.
+   
 5. **Как создать суперпользователя для доступа к административной панели Django?** - Командой `python manage.py createsuperuser`, затем ввести имя пользователя, email и пароль. Войти можно по адресу `/admin/`.
+   
 6. **Что такое ORM? Перечислите основные методы для выполнения операций CRUD.** - ORM - технология сопоставления объектов Python со строками таблиц БД, позволяющая работать с данными без SQL. Create: `save()`, `objects.create()`. Read: `all()`, `filter()`, `get()`, `exclude()`. Update: изменение атрибутов и `save()`. Delete: `delete()`.
+   
 7. **В чем разница между методами `filter()` и `get()`?** - `filter()` возвращает `QuerySet` (набор записей, возможно пустой или из нескольких элементов). `get()` возвращает ровно один объект; если записи нет, возникает `DoesNotExist`, если найдено несколько - `MultipleObjectsReturned`.
+   
 8. **Как настроить загрузку изображений (медиафайлов) в проекте Django?** - Установить Pillow, использовать `ImageField(upload_to=...)` в модели, в `settings.py` задать `MEDIA_ROOT` и `MEDIA_URL`, а в корневой `urls.py` при `DEBUG = True` добавить `urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)`.
-9. **Для чего нужен метод `__str__` в модели?** - Он возвращает строковое представление объекта. Благодаря ему в консоли, админке и при выводе объект отображается осмысленно (например, по заголовку), а не как `News object (1)`.
+
+9.  **Для чего нужен метод `__str__` в модели?** - Он возвращает строковое представление объекта. Благодаря ему в консоли, админке и при выводе объект отображается осмысленно (например, по заголовку), а не как `News object (1)`.
+    
 10. **Что произойдёт, если выполнить `python manage.py makemigrations`, но не выполнить `migrate`?** - Будет создан только файл миграции, а база данных не изменится: таблица не появится (или не обновится), и при обращении к модели возникнет ошибка вида `no such table`. Django также будет предупреждать о непримененных миграциях.
 
 
