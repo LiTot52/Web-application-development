@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{ title }</title>
+</head>
+
+<body>
+	<h1>{{ title }}</h1>
+
+	{% for item in news %}
+	<div>
+		<p>{{ item.title }}</p>
+		<p>{{ item.content }}</p>
+		<p>{{ item.created_at|date:"d.m.Y H:i" }}</p>
+	</div>
+	<hr>
+	{% endfor %}
+
+</body>
+
+</html>
