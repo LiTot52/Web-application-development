@@ -234,7 +234,7 @@ labs/
  
 ![Вход в админку](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-3/02-admin-login.png)
  
-**3. Список новостей в админке (столбцы, поиск, русские названия).**
+**3. Список новостей в админке.**
  
 ![Список в админке](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-3/03-admin-list.png)
  

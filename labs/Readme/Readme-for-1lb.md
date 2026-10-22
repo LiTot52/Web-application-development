@@ -74,16 +74,25 @@ urlpatterns = [
     path('test/', test),
 ]
 ```
+---
 
-### Скриншоты работы всех эндпоинто
+### Скриншоты работы всех эндпоинтов
 
-**1. `http://127.0.0.1:8000/` - Тестовая страница.**
+<details>
+<summary><b>1. <code>http://127.0.0.1:8000/</code> - Тестовая страница</b></summary>
 
 ![Тестовая страница](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-1/01-get-all.png)
 
+</details>
 
-**2. `http://127.0.0.1:8000/news/test/` - Тестовая страница с текстом**
+<details>
+<summary><b>2. <code>http://127.0.0.1:8000/news/test/</code> - Тестовая страница с текстом</b></summary>
+
 ![Тестовая страница с текстом](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-1/02-get-all.png)
+
+</details>
+
+---
 
 ```
 labs/
