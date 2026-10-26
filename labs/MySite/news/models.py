@@ -5,6 +5,17 @@ from django.db import models
 # Pillow
 
 
+class Category(models.Model):
+    title = models.CharField(
+        max_length=150, db_index=True, verbose_name='Наименование товара')
+
+
+class Meta:
+    verbose_name = 'Категория'
+    verbose_name_plural = 'Категории'
+    ordering = ['title']
+
+
 class News(models.Model):
     title = models.CharField(max_length=150, verbose_name='Наименование')
     content = models.TextField(blank=True, verbose_name='Контент')
@@ -15,6 +26,8 @@ class News(models.Model):
         upload_to='photos/%Y/%m/%d', verbose_name='Фото', blank=True)
     is_published = models.BooleanField(
         default=True, verbose_name='Опубликовано')
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, null=True, verbose_name='Категория')
 
 
 class Order(models.Model):
