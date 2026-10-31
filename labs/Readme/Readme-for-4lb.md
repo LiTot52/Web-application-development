@@ -10,11 +10,10 @@
   - [Содержание](#содержание)
   - [Цель работы](#цель-работы)
   - [Теоретическое обоснование](#теоретическое-обоснование)
+    - [Файлы папки](#файлы-папки)
     - [Команды для запуска](#команды-для-запуска)
   - [Выполнение практического примера](#выполнение-практического-примера)
-    - [Описание ключевых файлов и папок](#описание-ключевых-файлов-и-папок)
     - [Скриншоты](#скриншоты)
-    - [Результаты проверки](#результаты-проверки)
   - [Вывод](#вывод)
   - [Ответы на контрольные вопросы](#ответы-на-контрольные-вопросы)
   - [Рекомендуемые источники](#рекомендуемые-источники)
@@ -64,23 +63,10 @@
 
 **Настройка админки для связанных данных:** `list_display` (в том числе поле-связь), `list_filter` (фильтр по категории), `list_editable` (редактирование прямо в списке), `search_fields`, `prepopulated_fields` (автозаполнение `slug`).
 
-### Команды для запуска
-
-```bash
-python manage.py makemigrations
-python manage.py sqlmigrate news 0005
-python manage.py migrate
-python manage.py check
-python manage.py runserver
-```
-
 ---
 
-## Выполнение практического примера
 
-
-
-
+### Файлы папки
 ```
 labs/
 ├── .venv/
@@ -112,35 +98,160 @@ labs/
 └── Readme.md
 ```
 
----
-### Описание ключевых файлов и папок
+### Команды для запуска
 
-| Файл / Папка                         | Назначение и внесённые изменения                                                                                                                                                    |
-| :----------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`news/models.py`**                 | Добавлена первичная модель `Category`; в `News` добавлено поле `category` (`ForeignKey`, `PROTECT`, `related_name`, `null`, `blank`); `__str__` и `Meta` перенесены внутрь классов. |
-| **`news/admin.py`**                  | Зарегистрирована `Category` с `CategoryAdmin`; в `NewsAdmin` добавлены `category` в `list_display`, `list_editable`, `list_filter`.                                                 |
-| **`news/views.py`**                  | В контроллере `index` применён `select_related('category')`.                                                                                                                        |
-| **`news/templates/news/index.html`** | Добавлен вывод категории новости, исправлен `<title>`.                                                                                                                              |
-| **`news/migrations/`**               | Добавлена миграция `0005`: создание `Category`, поле `category` у `News`, параметры `Meta`.                                                                                         |
-| **`db.sqlite3`**                     | Созданы таблица `news_category` и столбец `news_news.category_id` с внешним ключом.                                                                                                 |
+```bash
+python manage.py makemigrations
+python manage.py sqlmigrate news 0005
+python manage.py migrate
+python manage.py check
+python manage.py runserver
+```
+
+---
+
+
+
+## Выполнение практического примера
+
+
+В файле `models.py` была спроектирована и реализована архитектура взаимосвязанных таблиц. Для сообщений добавлена каскадная связь `ForeignKey` с моделью тем форума. Также успешно решена задача интеграции поля для загрузки пользовательских медиафайлов `FileField` с поддержкой опционального заполнения (`blank=True, null=True`).
+
+**`news/models.py`**
+
+```python 
+
+from django.db import models
+
+# Create your models here.
+# pip install
+# Pillow
+
+
+class Category(models.Model):
+    title = models.CharField(
+        max_length=150, db_index=True, verbose_name='Наименование товара')
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        ordering = ['title']
+
+    def __str__(self):
+        return self.title
+
+
+class News(models.Model):
+    title = models.CharField(max_length=150, verbose_name='Наименование')
+    content = models.TextField(blank=True, verbose_name='Контент')
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='Дата публикации')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
+    photo = models.ImageField(
+        upload_to='photos/%Y/%m/%d', verbose_name='Фото', blank=True)
+    is_published = models.BooleanField(
+        default=True, verbose_name='Опубликовано')
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, null=True, verbose_name='Категория')
+
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+
+
+class Order(models.Model):
+    customer_name = models.CharField(max_length=200)
+    order_date = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+    delivery_address = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Заказ №{self.id} - {self.customer_name}"
+
+
+class Topic(models.Model):
+    name = models.CharField(max_length=180, verbose_name='Название темы')
+    author_name = models.CharField(max_length=100, verbose_name='Автор темы')
+    create_date = models.DateTimeField(
+        auto_now_add=True, verbose_name='Дата создания')
+    is_it_closed = models.BooleanField(
+        default=False, verbose_name='Закрыта ли тема')
+
+    class Meta:
+        verbose_name = "Тема форума"
+        verbose_name_plural = 'Темы форума'
+        ordering = ['-create_date']
+
+    def __str__(self):
+        return self.name
+
+
+class Message(models.Model):
+    # ? связь с темой
+    topic = models.ForeignKey(
+        Topic, on_delete=models.CASCADE, verbose_name='Тема')
+    text = models.CharField(max_length=200, verbose_name='Текст сообщения')
+    author_name = models.CharField(
+        max_length=180, verbose_name='Автор сообщения')
+    date = models.DateTimeField(
+        auto_now_add=True, verbose_name='Дата отправки')
+    file = models.FileField(upload_to='forum_files/',
+                            blank=True, null=True, verbose_name='Файл')
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
+        ordering = ['date']
+
+    def __str__(self):
+        return f"Сообщение от {self.author_name} в теме '{self.topic.name}'"
+
+```
+
+В конфигурационном файле панели администратора `admin.py` разработан кастомный интерфейс для комфортного администрирования сущностей форума. Реализованы функции текстового поиска по содержимому и гибкие фильтры по временным меткам.
+
+**`news/admin.py`**
+
+```python
+
+
+```
 
 
 ### Скриншоты
 
+<details>
+<summary><b>1. Главная страница админ-панели с разделами форума</b></summary>
 
-### Результаты проверки
+![Разделы Темы и Сообщения в админке](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/01-admin-main.png)
 
-| Проверка                                                       | Результат                                                                      |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `python manage.py check`                                       | `System check identified no issues`                                            |
-| `makemigrations` / `migrate`                                   | Миграция `0005` создана и применена без ошибок                                 |
-| Создано 4 категории и привязано 7 существующих новостей        | Новости получили категории Культура, Спорт, Политика, Наука                    |
-| `category.news.all()` для «Политика»                           | Возвращает 2 новости (обратный доступ через `related_name`)                    |
-| Удаление категории «Политика», в которой есть новости          | `ProtectedError`, категория сохранена (в админке - страница с предупреждением) |
-| Удаление категории без новостей                                | Выполняется успешно                                                            |
-| `http://127.0.0.1:8000/admin/news/news/`                       | Колонка «Категория», флажки «Опубликовано», фильтры справа                     |
-| `http://127.0.0.1:8000/admin/news/news/?category__id__exact=3` | Показаны только новости категории «Политика»                                   |
-| `http://127.0.0.1:8000/news/`                                  | Список новостей с указанием категории                                          |
+</details>
+
+<details>
+<summary><b>2. Форма создания новой Темы форума</b></summary>
+
+![Создание темы форума](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/02-topic-add.png)
+
+</details>
+
+<details>
+<summary><b>3. Форма добавления нового Сообщения с прикреплением файла</b></summary>
+
+![Добавление сообщения в тему](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/03-message-add.png)
+
+</details>
+
+<details>
+<summary><b>4. Список сообщений в админке </b></summary>
+
+![Поиск по тексту и фильтр по дате](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/04-message-list-filters.png)
+
+</details>
 
 
 ## Вывод

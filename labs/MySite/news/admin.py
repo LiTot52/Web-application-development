@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, Category
+from .models import News, Category, Topic, Message
 
 # Register your models here.
 
@@ -19,5 +19,18 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
+class TopicAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'author_name', 'create_date', 'is_it_closed')
+    search_fields = ('name',)
+
+
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'topic', 'text', 'author_name', 'date', 'file')
+    search_fields = ('text',)
+    list_filter = ('date',)
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Topic, TopicAdmin)
+admin.site.register(Message, MessageAdmin)
