@@ -226,7 +226,7 @@ class NewsConfig(AppConfig):
 <details>
 <summary><b>1. <code>http://127.0.0</code> - страница со списком новостей</b></summary>
 
-![Список новостей](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-3/01-news-list.png)
+![Список новостей](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/Readme/screenshots/labs-3/01-news-list.png)
 
 </details>
 

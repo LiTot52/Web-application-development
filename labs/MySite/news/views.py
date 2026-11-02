@@ -11,3 +11,7 @@ def index(request):
 
 def test(request):
     return HttpResponse('<h1>Тестовая страница</h1>')
+
+
+def test2(request):
+    return HttpResponse('<h1>Hello world</h1>')
