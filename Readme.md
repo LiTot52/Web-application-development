@@ -20,7 +20,7 @@
 | 1   | Виртуальное окружение. Контроллеры и маршруты | [Лабораторная №1](labs/Readme/Readme-for-1lb.md) |
 | 2   | Модели, миграции, ORM                         | [Лабораторная №2](labs/Readme/Readme-for-2lb.md) |
 | 3   | Шаблоны. Админка Django                       | [Лабораторная №3](labs/Readme/Readme-for-3lb.md) |
-| 4   | Связи моделей (ForeignKey, PROTECT)           | [Лабораторная №3](labs/Readme/Readme-for-4lb.md) |
+| 4   | Связи моделей (ForeignKey, PROTECT)           | [Лабораторная №4](labs/Readme/Readme-for-4lb.md) |
 | 5   | Bootstrap, медиафайлы, шаблоны                | в работе                                         |
 
 ## Быстрый старт
