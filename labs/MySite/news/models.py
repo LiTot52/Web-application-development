@@ -36,6 +36,9 @@ class News(models.Model):
         verbose_name_plural = 'Новости'
         ordering = ['-created_at']
 
+    def my_func(self):
+        return 'Последние новости'
+
     def __str__(self):
         return self.title
 
