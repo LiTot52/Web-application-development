@@ -219,6 +219,42 @@ class Message(models.Model):
 
 ```python
 
+from django.contrib import admin
+from .models import News, Category, Topic, Message
+
+# Register your models here.
+
+
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'category', 'created_at',
+                    'updated_at', 'is_published')
+    list_display_links = ('id', 'title')
+    search_fields = ('title', 'content')
+    list_editable = ('is_published',)
+    list_filter = ('is_published', 'category')
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+    list_display_links = ('id', 'title')
+    search_fields = ('title',)
+
+
+class TopicAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'author_name', 'create_date', 'is_it_closed')
+    search_fields = ('name',)
+
+
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'topic', 'text', 'author_name', 'date', 'file')
+    search_fields = ('text',)
+    list_filter = ('date',)
+
+
+admin.site.register(News, NewsAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Topic, TopicAdmin)
+admin.site.register(Message, MessageAdmin)
 
 ```
 
@@ -228,28 +264,28 @@ class Message(models.Model):
 <details>
 <summary><b>1. Главная страница админ-панели с разделами форума</b></summary>
 
-![Разделы Темы и Сообщения в админке](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/01-admin-main.png)
+![Разделы Темы и Сообщения в админке](labs/screenshots/labs-4/01-admin-main.png)
 
 </details>
 
 <details>
 <summary><b>2. Форма создания новой Темы форума</b></summary>
 
-![Создание темы форума](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/02-topic-add.png)
+![Создание темы форума](labs/screenshots/labs-4/02-topic-add.png)
 
 </details>
 
 <details>
 <summary><b>3. Форма добавления нового Сообщения с прикреплением файла</b></summary>
 
-![Добавление сообщения в тему](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/03-message-add.png)
+![Добавление сообщения в тему](labs/screenshots/labs-4/03-message-add.png)
 
 </details>
 
 <details>
 <summary><b>4. Список сообщений в админке </b></summary>
 
-![Поиск по тексту и фильтр по дате](/Лабы/Второй%20год/Web-разработка/Web-application-development/labs/screenshots/labs-4/04-message-list-filters.png)
+![Поиск по тексту и фильтр по дате](labs/screenshots/labs-4/04-message-list-filters.png)
 
 </details>
 
